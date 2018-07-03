@@ -7,8 +7,8 @@
 				<th>Ilość</th>
 				<th>Cena zakupu</th>
 				<th>Wartość </th>
-				<th>Koszt Opis</th>
-				<th>Koszt realizacji</th>
+				<th>Koszty dodatkowe</th>
+				<th>Wartość</th>
 				<th>Opcje</th>
 			</tr>
 		</thead>
@@ -23,12 +23,12 @@
 					<td><?= $zamowienie['kosztOpis'] ?></td>
 					<td class="money"><?= $zamowienie['kosztCena'] ?> zł</td>
 					<td>
-						<button class="btn btn-success" value="zatwierdz" data-id='<?= $zamowienie['id'] ?>' >zatwierdz</button>
-						<button class="btn btn-danger" value="usun" data-id='<?= $zamowienie['id'] ?>' >usuń</button>
+						<button class="btn btn-success" value="zatwierdz" data-idzam='<?= $zamowienie['id'] ?>' >zatwierdz</button>
+						<button class="btn btn-danger" value="usun" data-idzam='<?= $zamowienie['id'] ?>' >usuń</button>
 						<!-- <button class="btn" value="edycja" data-id='<?= $zamowienie['id'] ?>' >edycja</button> -->
 						<!-- <a href="edycja.php?id=<?= $zamowienie['id'] ?>" class="button btn btn-success">Edycja</a> -->
 						<a href="edycja.php?id=<?= $zamowienie['id'] ?>"><button class="btn-edit">edytuj</button></a>
-						<button class="btn" value="komentarz" data-id='<?= $zamowienie['id'] ?>' >komentarz</button>
+						<button class="btn" value="komentarz" data-idzam='<?= $zamowienie['id'] ?>' >komentarz</button>
 					</td>
 				</tr>
 			<?php endforeach; ?>					

@@ -1,7 +1,7 @@
 <?php
-  require_once "/core/funkcje.php";
-  // sprawdz_sesje();
+	require_once "/core/init.php";
 ?>
+<!DOCTYPE html>
 <html lang=''>
 <head>
   <title>Zamowienia</title>

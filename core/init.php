@@ -1,8 +1,21 @@
 <?php
-	define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . 'zam2');
-	define('SITEROOT',"http://" . $_SERVER['SERVER_NAME'] . '/zam2' );
+	define('APP_NAME', 'zam2');
+	define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/'. APP_NAME);
+	define('SITEROOT',"http://" . $_SERVER['SERVER_NAME'] . '/'. APP_NAME );
 	define('TIMEOUT', '3600');
 
+	define('PRACOWNIK', 1);
+	define('KIEROWNIK', 2);
+	define('ZAM_PUB', 4);
+	define('KSIEGOWY', 8);
+	define('PREZES', 16);
+
 	require_once APP_DIR . '/inc/nazwadb.inc.php';
+	require_once "funkcje.php";
 	
 	$pdo = polaczZBaza($host, $uzytkownik, $haslo, $nazwabazydanych);
+	
+	$uri = explode('/', $_SERVER['REQUEST_URI']);	
+	if (end($uri) != 'login.php') {
+		sprawdzSesje();
+	}

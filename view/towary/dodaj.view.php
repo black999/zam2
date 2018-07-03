@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="tytul">Nowy towar</div>
+<div class="dialog">takie tam</div>
 <div>
 	<form action="#" method="POST">
 		<table>

@@ -30,10 +30,6 @@
 		<input type="text" name="kosztOpis" placeholder="np. kurier" value="<?= $zamowienie['kosztOpis'] ?>">
 	</form>
 </div>
-<div class="dial">
-	<p>Akcja zakończona powodzeniem</p>
-	<button class="button exit">Zamknij</button>
-</div>
 <?php include "lista.inc.php" ?>    
 <script type="text/javascript">
 	<?php

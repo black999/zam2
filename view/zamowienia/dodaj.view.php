@@ -7,31 +7,39 @@
 	<title>Nowe zamowienie</title>
 </head>
 <body>
+<div class="dialog dialog-sm">
+	<button id="zamknij">zamknij</button>
+	<p id='p2'></p>
+	<form id="dodaj-msg" method="POST" action="<?= SITEROOT ?>/ajax/zamowienia/komentarz.php" >
+		<input class="long" data-idzam="" id="input1" type="text" name="komentarz">
+		<input type="submit" value="dodaj"></button>
+	</form>
+</div>
 <div class="tytul">Nowe zamówienie</div>	
-<div >
+<div>
 	<form action="#" method="POST">
-		<label>Towar:</label> 
+		<label>Wybierz towar:</label> 
 		<select id="sel1" name="idTowaru" >
+			<option></option>
 			<?php foreach ($towary as $towar) : ?>
 				<option data-cenaZak="<?= $towar['cenaZak'] ?>" value="<?= $towar['id'] ?>" >
 					<?= $towar['nazwa'] . " - Cena " . $towar['cenaZak'] . " zł" ?>
 				</option>
 			<?php endforeach ?>
 		</select>
-		<button type="submit" class="btn-success">Zapisz</button><br>
+		<a href='../towary/dodaj.php' ><button>Nowy towar</button></a>
 		<label>Ilość:</label>
 		<input class="short" type="number" name="ilosc" value="1" max="10000">	
 		<label>Cena zakupu:</label>
 		<input class="short" id="cenaZak" name="cenaZak">
-		<label>Koszt realizacji:</label>
-		<input class="short" type="text" name="kosztCena">
-		<label>Opis kosztu:</label>
+		<br>
+		<label>Koszty dodatkowe : </label>
 		<input type="text" name="kosztOpis" placeholder="np. kurier">
+		<label>Wartość : </label>
+		<input class="short" type="text" name="kosztCena">
+		<button type="submit" class="btn-success">Zapisz</button>
+		<!-- <a href='../towary/dodaj.php' ><i class="fas fa-plus-circle fa-lg" style="color: gray"></i></a> -->
 	</form>
-</div>
-<div class="dial">
-	<p>Akcja zakończona powodzeniem</p>
-	<button class="button exit">Zamknij</button>
 </div>
 <?php include "lista.inc.php" ?>    
 <script type="text/javascript">

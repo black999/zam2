@@ -11,9 +11,10 @@
     font-family: 'Open Sans', sans-serif;
 	letter-spacing: -1px;
 	padding: 15px 0 0;
-	-webkit-box-shadow: 0 0 2px silver; 
+/*	-webkit-box-shadow: 0 0 2px silver; 
     -moz-box-shadow: 0 0 2px silver; 
-    box-shadow: 0 0 2px silver; 
+    box-shadow: 0 0 2px silver; */
+    box-shadow:10px 10px 20px #555;
 }
 form {margin: 0;}
 label {

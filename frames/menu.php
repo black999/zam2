@@ -3,7 +3,6 @@
   // if (!isset($_SESSION['auth'])) {
   // header("Location:login.php");
   // }
-  require_once "../core/funkcje.php";
   require_once "../core/init.php";
 
 ?>
@@ -22,8 +21,7 @@
    <li class='has-sub'><a href='#'><span>Zamowienia</span></a>
       <ul>
        <li><a href='../core/zamowienia/dodaj.php' TARGET='srodek'><span>Nowe</span></a></li>
-       <li><a href='listaodrzuconych.php' TARGET='srodek'><span>Odrzucone</span></a></li>
-       <li class='last'><a href='listazrealizowanych.php' TARGET='srodek'><span>Zrealizowane</span></a></li>
+       <li class='last'><a href='../core/zamowienia/doakceptacji.php' TARGET='srodek'><span>do akceptacji</span></a></li>
       </ul>
    </li>
    <li class='has-sub'><a href='#'><span>Towary</span></a>

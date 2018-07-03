@@ -3,19 +3,49 @@ function dd($string){
   die(var_dump($string));
 }
 
+function zaloguj($dane){
+  global $pdo;
+  $row = "";
+  $sql = "SELECT * FROM personel WHERE login = :login";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':login', $dane['login'], PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  if (isset($row['login']) && $row['haslo'] == $dane['haslo']){
+    $_SESSION[APP_NAME]['auth'] = 'true';
+    $_SESSION[APP_NAME]['loginTime'] = time();
+    $_SESSION[APP_NAME]['imie'] = $row['imie'];
+    $_SESSION[APP_NAME]['nazwisko'] = $row['nazwisko'];
+    $_SESSION[APP_NAME]['idOsoby'] = $row['id'];
+    $_SESSION[APP_NAME]['idDzial'] = $row['idDzial'];
+    $_SESSION[APP_NAME]['realBiuro'] = $row['realBiuro'];
+    // uprawnienia wyciagamy w odwrotnej kolejności niż w bazie aby pracownik mial najnizsze 000001
+    $_SESSION[APP_NAME]['upr'] = bindec($row['uAdmin'].$row['uPrez'].$row['uKsieg'].$row['uZampub'].$row['uKier'].$row['uPrac']);
+    return $_SESSION;
+  } else {
+    return false;
+  }
+}
+
+
 // funkcja sprawdza czy sesja jest wciaż aktywan jeśli nie to wylogowuje
 function sprawdzSesje () {
   session_start();
-  if (!isset($_SESSION['zam2']['auth'])) {
-    header("Location:login.php");
+  if (!isset($_SESSION[APP_NAME]['auth'])) {
+    header("Location:". SITEROOT . "/core/login.php");
   } else {
-        if ((time() - $_SESSION['zam2']["loginTime"]) > TIMEOUT) {   //sprawdzamy kiedy ostatni raz byla aktywnosc
-            header("Location: login.php?menu=logout");  // jesli powyzej TIMEOUT sekund to wylogowujemy
-          } else {
-            $_SESSION['zam2']["loginTime"] = time();
-          }
-        }
+    if ((time() - $_SESSION[APP_NAME]["loginTime"]) > TIMEOUT) {   //sprawdzamy kiedy ostatni raz byla aktywnosc
+      header("Location:". SITEROOT . "/core/logout.php"); // jesli powyzej TIMEOUT sekund to wylogowujemy
+    } else {
+      $_SESSION[APP_NAME]["loginTime"] = time();
+    }
+  }
 }
+
 
 //funkcja do podłączenia do bazy i ustawienia parametrów jezykowych
 function  polaczZBaza($host, $uzytkownik, $haslo, $nazwabazydanych) {
@@ -34,8 +64,9 @@ function  polaczZBaza($host, $uzytkownik, $haslo, $nazwabazydanych) {
 // funkcja dodaje do bazy zamowienie 
 function addZamowienie($dane) {
 	global $pdo;
-  $sql = "INSERT into zamowienia values (NULL, '1', CURDATE(), :idTowaru, :cenaZak, :ilosc, :kosztOpis, :kosztCena, '0')";
+  $sql = "INSERT into zamowienia values (NULL, :idOsoby, CURDATE(), :idTowaru, :cenaZak, :ilosc, :kosztOpis, :kosztCena, '0', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00')";
   $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':idOsoby', $dane['idOsoby'], PDO::PARAM_INT);
   $stmt->bindValue(':idTowaru', $dane['idTowaru'], PDO::PARAM_INT);
   $stmt->bindValue(':cenaZak', str_replace(",",".",$dane['cenaZak']), PDO::PARAM_INT);
   $stmt->bindValue(':ilosc', $dane['ilosc'], PDO::PARAM_INT);
@@ -108,6 +139,28 @@ function updateZamowienie($dane){
   }
 }
 
+//funkcja updateuje zamowienie akceptacją zgodnie z wartością zmiennej typ
+function akceptujZamowienie($idZam, $typ, $ok = true){
+  global $pdo;
+  if ($typ == 'kier') $sql = "UPDATE zamowienia SET akcKie= :id, dataAkcKie='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'zamp') $sql = "UPDATE zamowienia SET akcZam= :id, dataAkcZam='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'ksie') $sql = "UPDATE zamowienia SET akcKsie= :id, dataAkcKsie='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'prez') $sql = "UPDATE zamowienia SET akcPre= :id, dataAkcPre='" . date('Y-m-d') . "' WHERE id = :idZam";
+  $stmt = $pdo->prepare($sql);
+  if ($ok == 'true') {
+    $stmt->bindValue(':id', $_SESSION[APP_NAME]['idOsoby'], PDO::PARAM_INT);
+  } else {
+    $stmt->bindValue(':id', $_SESSION[APP_NAME]['idOsoby']*(-1), PDO::PARAM_INT);  //jesli zamiast akcepbacji mamy odrzucenie to dodajemy liczbę przeciwną zam 10 -10
+  }
+  $stmt->bindValue(':idZam', $idZam, PDO::PARAM_INT);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+}
+
 // funkcja zatwierdza zamowienie o podanym id
 function zatwierdzZam($id){
   global $pdo;
@@ -150,7 +203,6 @@ function getTowary($warunek = "") {
     $warunek = 'WHERE ' . $warunek;
   }
   global $pdo;
-  $tab = [];
   $sql = "SELECT t.*, d.nazwa as dzial from towary t 
           left join dzialy d on d.id = t.idDzial " . $warunek; 
   $stmt = $pdo->prepare($sql);
@@ -207,4 +259,70 @@ function getDzialy() {
     $tab[] = $row;
   }
   return $tab;
+}
+
+// funkcja pobiera z bazy informację o wszystkich komentarzach
+function getKomentarze($warunek = "") {
+  $tab = [];
+  if ($warunek) {
+    $warunek = 'WHERE ' . $warunek;
+  }
+  global $pdo;
+  $sql = "SELECT * from  komentarze " . $warunek;
+  $stmt = $pdo->prepare($sql);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $tab[$row['id']] = $row;
+  }
+  return $tab;
+}
+
+// funkcja dodaje do bazy komentarz
+function addKomentarz($dane) {
+  global $pdo;
+  $sql = "INSERT into komentarze values (NULL, :idZam, '1', 'Ireneusz Stalicki', NOW(),  :komentarz )";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':idZam', $dane['idZam'], PDO::PARAM_STR);
+  $stmt->bindValue(':komentarz', $dane['komentarz'], PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+}
+
+// funkcja pobiera z bazy informację o wszystkich zamowieniach
+function getPersonel($warunek = "") {
+  global $pdo;
+  $tab = [];
+  if ($warunek) {
+    $warunek = 'WHERE ' . $warunek;
+  }
+  $sql = "SELECT *  from personel";
+  $stmt = $pdo->prepare($sql);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $tab[$row['id']] = $row;
+  }
+  return $tab;
+}
+
+// funkcja zwraca najwyższe uprawnienie danej osoby 
+function getPozycja() {
+  // $poz = '';
+  $poz =  ($_SESSION[APP_NAME]['upr']  & PRACOWNIK) > 0  ? 'prac' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & KIEROWNIK) > 0  ? 'kier' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & ZAM_PUB) > 0  ? 'zamp' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & KSIEGOWY) > 0  ? 'ksie' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & PREZES) > 0  ? 'prez' : $poz;
+  return $poz;
 }
