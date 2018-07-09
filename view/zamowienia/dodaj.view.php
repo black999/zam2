@@ -27,7 +27,7 @@
 				</option>
 			<?php endforeach ?>
 		</select>
-		<a href='../towary/dodaj.php' ><button>Nowy towar</button></a>
+		<a href='../towary/dodaj.php' class="btn">Nowy towar</a>
 		<label>Ilość:</label>
 		<input class="short" type="number" name="ilosc" value="1" max="10000">	
 		<label>Cena zakupu:</label>

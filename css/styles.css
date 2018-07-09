@@ -136,6 +136,14 @@ select {
   padding: 5px;
   margin: 3px;
 }
-a {
-  text-decoration: none; 
+a.btn {
+  width: 115px;
+  /*height: 25px;*/
+  background: lightgray;
+  padding: 6px 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+  /*font-weight: bold;*/
+  text-decoration: none;
 }

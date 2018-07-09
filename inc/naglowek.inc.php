@@ -6,6 +6,7 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <script src='<?=SITEROOT ?>/script/jquery.js' type='text/javascript'></script> 
+<!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js' type='text/javascript'></script>  -->
  
 <?php if (end($uri) == 'menu.php') : ?>
   	<link rel='stylesheet' type='text/css' href='<?= SITEROOT ?>/css/menu.css'>

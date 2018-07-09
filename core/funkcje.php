@@ -74,7 +74,7 @@ function addZamowienie($dane) {
   $stmt->bindValue(':kosztCena', str_replace(",",".",$dane['kosztCena']), PDO::PARAM_INT);
   try {
   	$stmt->execute();
-  	return true;
+  	return $pdo->lastInsertId();
   } catch (PDOException $e) {
   	die($e->getMessage());
   }
@@ -87,8 +87,9 @@ function getZamowienia($warunek = "") {
   if ($warunek) {
     $warunek = 'WHERE ' . $warunek;
   }
-  $sql = "SELECT z.*, t.nazwa from zamowienia z
-          join towary t on z.idTowaru = t.id " . $warunek; 
+  $sql = "SELECT z.*, t.nazwa, p.imie, p.nazwisko, p.idDzial from zamowienia z
+          join towary t on z.idTowaru = t.id 
+          join personel p on z.idOsoby = p.id " . $warunek; 
   $rows = $pdo->prepare($sql);
   try {
   	$rows->execute();
@@ -142,10 +143,10 @@ function updateZamowienie($dane){
 //funkcja updateuje zamowienie akceptacją zgodnie z wartością zmiennej typ
 function akceptujZamowienie($idZam, $typ, $ok = true){
   global $pdo;
-  if ($typ == 'kier') $sql = "UPDATE zamowienia SET akcKie= :id, dataAkcKie='" . date('Y-m-d') . "' WHERE id = :idZam";
-  if ($typ == 'zamp') $sql = "UPDATE zamowienia SET akcZam= :id, dataAkcZam='" . date('Y-m-d') . "' WHERE id = :idZam";
-  if ($typ == 'ksie') $sql = "UPDATE zamowienia SET akcKsie= :id, dataAkcKsie='" . date('Y-m-d') . "' WHERE id = :idZam";
-  if ($typ == 'prez') $sql = "UPDATE zamowienia SET akcPre= :id, dataAkcPre='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'akcKie') $sql = "UPDATE zamowienia SET akcKie= :id, dataAkcKie='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'akcZam') $sql = "UPDATE zamowienia SET akcZam= :id, dataAkcZam='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'akcKsie') $sql = "UPDATE zamowienia SET akcKsie= :id, dataAkcKsie='" . date('Y-m-d') . "' WHERE id = :idZam";
+  if ($typ == 'akcPre') $sql = "UPDATE zamowienia SET akcPre= :id, dataAkcPre='" . date('Y-m-d') . "' WHERE id = :idZam";
   $stmt = $pdo->prepare($sql);
   if ($ok == 'true') {
     $stmt->bindValue(':id', $_SESSION[APP_NAME]['idOsoby'], PDO::PARAM_INT);
@@ -319,10 +320,10 @@ function getPersonel($warunek = "") {
 // funkcja zwraca najwyższe uprawnienie danej osoby 
 function getPozycja() {
   // $poz = '';
-  $poz =  ($_SESSION[APP_NAME]['upr']  & PRACOWNIK) > 0  ? 'prac' : $poz;
-  $poz =  ($_SESSION[APP_NAME]['upr']  & KIEROWNIK) > 0  ? 'kier' : $poz;
-  $poz =  ($_SESSION[APP_NAME]['upr']  & ZAM_PUB) > 0  ? 'zamp' : $poz;
-  $poz =  ($_SESSION[APP_NAME]['upr']  & KSIEGOWY) > 0  ? 'ksie' : $poz;
-  $poz =  ($_SESSION[APP_NAME]['upr']  & PREZES) > 0  ? 'prez' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & PRACOWNIK) > 0  ? 'akcPra' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & KIEROWNIK) > 0  ? 'akcKie' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & ZAM_PUB) > 0  ? 'akcZam' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & KSIEGOWY) > 0  ? 'akcKsie' : $poz;
+  $poz =  ($_SESSION[APP_NAME]['upr']  & PREZES) > 0  ? 'akcPre' : $poz;
   return $poz;
 }

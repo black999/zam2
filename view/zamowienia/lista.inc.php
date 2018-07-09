@@ -25,8 +25,6 @@
 					<td>
 						<button class="btn btn-success" value="zatwierdz" data-idzam='<?= $zamowienie['id'] ?>' >zatwierdz</button>
 						<button class="btn btn-danger" value="usun" data-idzam='<?= $zamowienie['id'] ?>' >usuń</button>
-						<!-- <button class="btn" value="edycja" data-id='<?= $zamowienie['id'] ?>' >edycja</button> -->
-						<!-- <a href="edycja.php?id=<?= $zamowienie['id'] ?>" class="button btn btn-success">Edycja</a> -->
 						<a href="edycja.php?id=<?= $zamowienie['id'] ?>"><button class="btn-edit">edytuj</button></a>
 						<button class="btn" value="komentarz" data-idzam='<?= $zamowienie['id'] ?>' >komentarz</button>
 					</td>
