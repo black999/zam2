@@ -1,6 +1,7 @@
 <?php
 	require_once "../../core/init.php";
 
+	// akceptacja zamowienia
 	akceptujZamowienie($_POST['idZam'], getPozycja(), $_POST['ok'] );
 	$akc = array('akcKie', 'akcZam', 'akcKsie', 'akcPre');
 	$warunek = '(statusZatw ="1" AND z.id =' . $_POST['idZam'] . ')';
