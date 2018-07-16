@@ -16,7 +16,7 @@
 		<input type="submit" value="dodaj"></button>
 	</form>
 </div>
-<div class="tytul">zamówienia do akceptacji</div>
+<div class="tytul"><?= $tytul ?></div>
 <div>
 	<table class="lista">
 		<thead>
@@ -44,16 +44,32 @@
 					<td colspan="12" >
 						<div style="overflow: auto;">
 							<div class="szczegoly-zam">
-								<p>weryfikacja - kierownik <?= $zamowienie['akcKie'] ?></p>
-								<p>weryfikacja - zam. publiczne <?= $zamowienie['akcZam'] ?></p>
-								<p>weryfikacja - księgowość <?= $zamowienie['akcKsie'] ?></p>
-								<p>akceptajca  - prezes <?= $zamowienie['akcPre'] ?></p>
+								<p>weryfikacja - kierownik 
+									<?php if ($zamowienie['akcKie'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcKie'])]['imie'] . " ". $personel[abs($zamowienie['akcKie'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - zam. publiczne 
+									<?php if ($zamowienie['akcZam'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcZam'])]['imie'] . " ". $personel[abs($zamowienie['akcZam'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - ksiegowość 
+									<?php if ($zamowienie['akcKsie'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcKsie'])]['imie'] . " ". $personel[abs($zamowienie['akcKsie'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - prezes
+									<?php if ($zamowienie['akcPre'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcPre'])]['imie'] . " ". $personel[abs($zamowienie['akcPre'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
 							</div>
 							<div class="szczegoly-zam">
-								<p>data : <?= $zamowienie['dataAkcKie'] ?></p>
-								<p>data : <?= $zamowienie['dataAkcZam'] ?></p>
-								<p>data : <?= $zamowienie['dataAkcKsie'] ?></p>
-								<p>data : <?= $zamowienie['dataAkcPre'] ?></p>
+								<p>data : <?= ($zamowienie['dataAkcKie'] == '0000-00-00') ? "": $zamowienie['dataAkcKie'] ?></p>
+								<p>data : <?= ($zamowienie['dataAkcZam'] == '0000-00-00') ? "": $zamowienie['dataAkcZam'] ?></p>
+								<p>data : <?= ($zamowienie['dataAkcKsie']== '0000-00-00') ? "": $zamowienie['dataAkcKsie']  ?></p>
+								<p>data : <?= ($zamowienie['dataAkcPre'] == '0000-00-00') ? "": $zamowienie['dataAkcPre'] ?></p>
 							</div>
 							<?php if (getPozycja() != 'akcPra' && $zamowienie[getPozycja()] == '0')  : ?>
 								<div class="szczegoly-zam weryfikacja">

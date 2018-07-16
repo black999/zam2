@@ -21,7 +21,9 @@
    <li class='has-sub'><a href='#'><span>Zamowienia</span></a>
       <ul>
        <li><a href='../core/zamowienia/dodaj.php' TARGET='srodek'><span>Nowe</span></a></li>
-       <li class='last'><a href='../core/zamowienia/doakceptacji.php' TARGET='srodek'><span>do akceptacji</span></a></li>
+       <li><a href='../core/zamowienia/doakceptacji.php' TARGET='srodek'><span>do akceptacji</span></a></li>
+       <li><a href='../core/zamowienia/dorealizacji.php' TARGET='srodek'><span>do realizacji</span></a></li>
+       <li class='last'><a href='../core/zamowienia/odrzucone.php' TARGET='srodek'><span>odrzucone</span></a></li>
       </ul>
    </li>
    <li class='has-sub'><a href='#'><span>Towary</span></a>
@@ -29,15 +31,10 @@
          <li class='last'><a href='../core/towary/dodaj.php' TARGET='srodek'><span>Dodaj/Edycja</span></a></li>
       </ul>
    </li>
-   <li class='has-sub'><a href='#'><span>Personel</span></a>
+   <li class='has-sub'><a href='#'><span>Admin</span></a>
       <ul>
-         <li><a href='personel.php?menu=dodaj' TARGET='srodek'><span>Dodaj</span></a></li>
-         <li class='last'><a href='personel.php?menu=lista' TARGET='srodek'><span>Lista/Edycja</span></a></li>
-      </ul>
-   </li>
-   <li class='has-sub'><a href='#'><span>Wydziały</span></a>
-      <ul>
-      <li class='last'><a href='dzialy.php?menu=dodaj' TARGET='srodek'><span>Dodaj/Edytuj</span></a></li>
+         <li><a href='nic' TARGET='srodek'><span>Personel</span></a></li>
+         <li class='last'><a href='nic' TARGET='srodek'><span>Wydziały</span></a></li>
       </ul>
    </li>
    <li class='last'><a href='#'><span>Info</span></a></li>
