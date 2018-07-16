@@ -76,8 +76,13 @@
 									<p>zweryfikuj</p>
 									<i name='yes' data-idzam='<?= $zamowienie['id'] ?>' class="fas fa-thumbs-up fa-lg" style="color: green"></i>	
 									<i name='no' data-idzam='<?= $zamowienie['id'] ?>' class="fas fa-thumbs-down fa-lg" style="color: red"></i>	
+									<i><input type="text" name="komentarz_negatywny" maxlength="220"></i>
 								</div>
 							<?php endif ?>
+							<div class="szczegoly-zam komentarz">
+								<p>Komentarze: </p>	
+								<span></span>
+							</div>
 						</div>
 					</td>
 				</tr>

@@ -32,7 +32,7 @@ $(document).ready(function() {
 			        url     : url,
 			        data    : { 
 			        	akcja	: 'pobierz',
-			        	idZam	: idZam
+			        	idZam	: idZam,
 			        },
 			        success: function(ret) {
 			        	$('#p2').html(ret);
@@ -45,13 +45,17 @@ $(document).ready(function() {
 		    	});
 			};
 			if (BtnVal == 'pokaz') {
+				$.post('<?= SITEROOT ?>/ajax/zamowienia/komentarz.php', {akcja: 'pobierz', idZam: idZam}, function(data, textStatus, xhr) {
+					dane.parents('tr').next('tr.ukr').find('.szczegoly-zam.komentarz > span').html(data);
+					console.log(data);
+				});
 				dane.parents('tr').siblings('tr.ukr').hide(50);
 				dane.parents('tr').next('tr.ukr').delay(400).fadeToggle('slow');
 			}
 		});
 	}
 	btnClick();
-	// obsługa formatki dodawania komentarza
+	// obsługa formatki dodawania komentarza modal
 	var form = $('#dodaj-msg');
     $(form).submit(function(event) {
 	    event.preventDefault();
@@ -66,7 +70,8 @@ $(document).ready(function() {
 	    	type: 'POST',
 	    	data: { akcja 		: 'dodaj', 
 	    			idZam		: idZam,
-	    			komentarz 	: komentarz}
+	    			komentarz 	: komentarz,
+		        	ok 			: '1'}
 	    })
 	    .done(function(e) {
 	    	$('#p2').html(e);
@@ -82,7 +87,7 @@ $(document).ready(function() {
     	var url = "<?= SITEROOT ?>/ajax/zamowienia/akceptuj.php";
     	var idZam = $(this).attr('data-idzam');
     	var ukryj = $(this).parent('div');
-	   	var szczegoly = $('tr[data-idzam=' + idZam +']') 
+	   	var szczegoly = $('tr[data-idzam=' + idZam +']');
     	$.post(url, {idZam: idZam, ok: true}, function(data, textStatus, xhr) {
     		szczegoly.html(data);
     		btnClick();
@@ -94,7 +99,12 @@ $(document).ready(function() {
     	var idZam = $(this).attr('data-idzam');
     	var ukryj = $(this).parent('div');	
     	var szczegoly = $('tr[data-idzam=' + idZam +']') 
-    	$.post(url, {idZam: idZam, ok: false}, function(data, textStatus, xhr) {
+    	var komentarz = ($(this).siblings('i').find('input').val());
+	   	if (komentarz == ""){
+	   		alert ('Podaj przyczynę negatywnej weryfikacji')
+	   		return false;
+	   	}
+    	$.post(url, {idZam: idZam, ok: false, komentarz: komentarz}, function(data, textStatus, xhr) {
     		szczegoly.html(data);
     		btnClick();
     		ukryj.hide();

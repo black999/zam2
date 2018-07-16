@@ -285,10 +285,13 @@ function getKomentarze($warunek = "") {
 // funkcja dodaje do bazy komentarz
 function addKomentarz($dane) {
   global $pdo;
-  $sql = "INSERT into komentarze values (NULL, :idZam, '1', 'Ireneusz Stalicki', NOW(),  :komentarz )";
+  $sql = "INSERT into komentarze values (NULL, :idZam, :idOsoby, :imieNazwisko, NOW(),  :komentarz, :ok)";
   $stmt = $pdo->prepare($sql);
   $stmt->bindValue(':idZam', $dane['idZam'], PDO::PARAM_STR);
   $stmt->bindValue(':komentarz', $dane['komentarz'], PDO::PARAM_STR);
+  $stmt->bindValue(':imieNazwisko', $dane['imieNazwisko'], PDO::PARAM_STR);
+  $stmt->bindValue(':ok', $dane['ok'], PDO::PARAM_INT);
+  $stmt->bindValue(':idOsoby', $dane['idOsoby'], PDO::PARAM_INT);
   try {
     $stmt->execute();
     return true;
@@ -319,7 +322,7 @@ function getPersonel($warunek = "") {
 
 // funkcja zwraca najwyższe uprawnienie danej osoby 
 function getPozycja() {
-  // $poz = '';
+  $poz = '';
   $poz =  ($_SESSION[APP_NAME]['upr']  & PRACOWNIK) > 0  ? 'akcPra' : $poz;
   $poz =  ($_SESSION[APP_NAME]['upr']  & KIEROWNIK) > 0  ? 'akcKie' : $poz;
   $poz =  ($_SESSION[APP_NAME]['upr']  & ZAM_PUB) > 0  ? 'akcZam' : $poz;
