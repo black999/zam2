@@ -269,7 +269,7 @@ function getKomentarze($warunek = "") {
     $warunek = 'WHERE ' . $warunek;
   }
   global $pdo;
-  $sql = "SELECT * from  komentarze " . $warunek;
+  $sql = "SELECT * from  komentarze " . $warunek . " ORDER BY data DESC";
   $stmt = $pdo->prepare($sql);
   try {
     $stmt->execute();
