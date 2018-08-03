@@ -19,7 +19,7 @@
 <div>
 	<form action="#" method="POST">
 		<label>Wybierz towar:</label> 
-		<select id="sel1" name="idTowaru" >
+		<select id="sel1" name="idTowaru" required>
 			<option></option>
 			<?php foreach ($towary as $towar) : ?>
 				<option data-cenaZak="<?= $towar['cenaZak'] ?>" value="<?= $towar['id'] ?>" >
@@ -32,6 +32,14 @@
 		<input class="short" type="number" name="ilosc" value="1" max="10000">	
 		<label>Cena zakupu:</label>
 		<input class="short" id="cenaZak" name="cenaZak">
+		<label>Zużyto bezpośrednio na cele: </label>
+		<select name="cel" required>
+			<option></option>
+			<option>Opcja 1</option>
+			<option>Opcja 2</option>
+			<option>Opcja 3</option>
+			<option>Opcja 4</option>
+		</select>
 		<br>
 		<label>Koszty dodatkowe : </label>
 		<input type="text" name="kosztOpis" placeholder="np. kurier">
