@@ -23,6 +23,7 @@
        <li><a href='../core/zamowienia/dodaj.php' TARGET='srodek'><span>Nowe</span></a></li>
        <li><a href='../core/zamowienia/doakceptacji.php' TARGET='srodek'><span>do akceptacji</span></a></li>
        <li><a href='../core/zamowienia/dorealizacji.php' TARGET='srodek'><span>do realizacji</span></a></li>
+       <li><a href='../core/zamowienia/zakonczone.php' TARGET='srodek'><span>zakończone</span></a></li>
        <li class='last'><a href='../core/zamowienia/odrzucone.php' TARGET='srodek'><span>odrzucone</span></a></li>
       </ul>
    </li>
