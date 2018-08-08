@@ -64,7 +64,7 @@ function  polaczZBaza($host, $uzytkownik, $haslo, $nazwabazydanych) {
 // funkcja dodaje do bazy zamowienie 
 function addZamowienie($dane) {
 	global $pdo;
-  $sql = "INSERT into zamowienia values (NULL, :idOsoby, CURDATE(), :idTowaru, :cenaZak, :cel, :ilosc, :kosztOpis, :kosztCena, '0', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0')";
+  $sql = "INSERT into zamowienia values (NULL, :idOsoby, CURDATE(), :idTowaru, :cenaZak, :cel, :ilosc, :kosztOpis, :kosztCena, '0', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00')";
   $stmt = $pdo->prepare($sql);
   $stmt->bindValue(':idOsoby', $dane['idOsoby'], PDO::PARAM_INT);
   $stmt->bindValue(':idTowaru', $dane['idTowaru'], PDO::PARAM_INT);

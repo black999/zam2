@@ -14,5 +14,5 @@
 	$zamowienia = getZamowienia($warunek);
 	$personel = getPersonel();
 	$tytul = 'zamówienia do realizacji';
-	include APP_DIR . "/view/zamowienia/doakceptacji.view.php";
+	include APP_DIR . "/view/zamowienia/dorealizacji.view.php";
 ?>

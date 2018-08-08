@@ -28,14 +28,63 @@
 				<th>cena zakupu</th>
 				<th>wartość </th>
 				<th>koszty dodatkowe</th>
-				<th>ilość zak.</th>
 				<th>opcje</th>
+				<th>ki</th>
+				<th>za</th>
+				<th>ks</th>
+				<th>pr</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($zamowienia as $zamowienie) : ?> 
 				<tr data-idzam='<?= $zamowienie['id'] ?>'>
-					<?php include 'lista_dorealizacji.inc.php' ?>
+					<?php include 'lista_zamowienie.inc.php' ?>
+				</tr>
+				<tr class="ukr" style="display: none;">
+					<td colspan="12" >
+						<div style="overflow: auto;">
+							<div class="szczegoly-zam">
+								<p>weryfikacja - kierownik 
+									<?php if ($zamowienie['akcKie'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcKie'])]['imie'] . " ". $personel[abs($zamowienie['akcKie'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - zam. publiczne 
+									<?php if ($zamowienie['akcZam'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcZam'])]['imie'] . " ". $personel[abs($zamowienie['akcZam'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - ksiegowość 
+									<?php if ($zamowienie['akcKsie'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcKsie'])]['imie'] . " ". $personel[abs($zamowienie['akcKsie'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+								<p>weryfikacja - prezes
+									<?php if ($zamowienie['akcPre'] != '0') : ?>
+										<b><?= $personel[abs($zamowienie['akcPre'])]['imie'] . " ". $personel[abs($zamowienie['akcPre'])]['nazwisko'] ?></b>
+									<?php endif ?>
+								</p>
+							</div>
+							<div class="szczegoly-zam">
+								<p>data : <?= ($zamowienie['dataAkcKie'] == '0000-00-00') ? "": $zamowienie['dataAkcKie'] ?></p>
+								<p>data : <?= ($zamowienie['dataAkcZam'] == '0000-00-00') ? "": $zamowienie['dataAkcZam'] ?></p>
+								<p>data : <?= ($zamowienie['dataAkcKsie']== '0000-00-00') ? "": $zamowienie['dataAkcKsie']  ?></p>
+								<p>data : <?= ($zamowienie['dataAkcPre'] == '0000-00-00') ? "": $zamowienie['dataAkcPre'] ?></p>
+							</div>
+							<?php if (getPozycja() != 'akcPra' && $zamowienie[getPozycja()] == '0')  : ?>
+								<div class="szczegoly-zam weryfikacja">
+									<p>zweryfikuj</p>
+									<i name='yes' data-idzam='<?= $zamowienie['id'] ?>' class="fas fa-thumbs-up fa-lg" style="color: green"></i>	
+									<i name='no' data-idzam='<?= $zamowienie['id'] ?>' class="fas fa-thumbs-down fa-lg" style="color: red"></i>	
+									<i><input type="text" name="komentarz_negatywny" maxlength="220"></i>
+								</div>
+							<?php endif ?>
+							<div class="szczegoly-zam komentarz">
+								<p>Komentarze: </p>	
+								<span></span>
+							</div>
+						</div>
+					</td>
 				</tr>
 			<?php endforeach; ?>					
 		</tbody>
