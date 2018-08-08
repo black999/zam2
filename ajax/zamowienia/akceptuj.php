@@ -3,7 +3,7 @@
 
 	// akceptacja zamowienia
 	akceptujZamowienie($_POST['idZam'], getPozycja(), $_POST['ok'] );
-	if ($_POST['komentarz'] != ""){
+	if (isset($_POST['komentarz']) && $_POST['komentarz'] != ""){
 		$_POST['idOsoby'] = $_SESSION[APP_NAME]['idOsoby'];
 		$_POST['imieNazwisko'] = $_SESSION[APP_NAME]['imie'] . " " . $_SESSION[APP_NAME]['nazwisko'];
 		$_POST['ok'] = '0';

@@ -1,8 +1,12 @@
 <?php
 	require_once "../init.php";
 
+	if ($_SERVER["REQUEST_METHOD"] == "POST"){
+		realizujZamowienie($_POST);
+	}
+
 	$akc = array('akcKie', 'akcZam', 'akcKsie', 'akcPre');
-	$warunek = 'statusZatw ="1" AND z.akcPre > 0';
+	$warunek = 'statusReal ="0" AND z.akcPre > 0';
 	if (getPozycja() == 'akcPra') {
 		$warunek .= " AND z.idOsoby =" . $_SESSION[APP_NAME]['idOsoby'];
 	} elseif (getPozycja() == 'akcKie') {

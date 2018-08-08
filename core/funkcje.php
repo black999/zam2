@@ -64,7 +64,7 @@ function  polaczZBaza($host, $uzytkownik, $haslo, $nazwabazydanych) {
 // funkcja dodaje do bazy zamowienie 
 function addZamowienie($dane) {
 	global $pdo;
-  $sql = "INSERT into zamowienia values (NULL, :idOsoby, CURDATE(), :idTowaru, :cenaZak, :cel, :ilosc, :kosztOpis, :kosztCena, '0', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00')";
+  $sql = "INSERT into zamowienia values (NULL, :idOsoby, CURDATE(), :idTowaru, :cenaZak, :cel, :ilosc, :kosztOpis, :kosztCena, '0', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0', '0000-00-00', '0')";
   $stmt = $pdo->prepare($sql);
   $stmt->bindValue(':idOsoby', $dane['idOsoby'], PDO::PARAM_INT);
   $stmt->bindValue(':idTowaru', $dane['idTowaru'], PDO::PARAM_INT);
@@ -155,6 +155,19 @@ function akceptujZamowienie($idZam, $typ, $ok = true){
     $stmt->bindValue(':id', $_SESSION[APP_NAME]['idOsoby']*(-1), PDO::PARAM_INT);  //jesli zamiast akcepbacji mamy odrzucenie to dodajemy liczbę przeciwną zam 10 -10
   }
   $stmt->bindValue(':idZam', $idZam, PDO::PARAM_INT);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+}
+//funkcja updateuje zamowienie - zmienia status na zrealizowane
+function realizujZamowienie($dane){
+  global $pdo;
+  $sql = "UPDATE zamowienia SET statusReal = '1', dataReal='" . date('Y-m-d') . "' WHERE id = :idZam";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':idZam', $dane['id'], PDO::PARAM_INT);
   try {
     $stmt->execute();
     return true;

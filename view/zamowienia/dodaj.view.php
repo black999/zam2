@@ -31,7 +31,7 @@
 		<label>Ilość:</label>
 		<input class="short" type="number" name="ilosc" value="1" max="10000">	
 		<label>Cena zakupu:</label>
-		<input class="short" id="cenaZak" name="cenaZak">
+		<input class="short" id="cenaZak" name="cenaZak"><br>
 		<label>Zużyto bezpośrednio na cele: </label>
 		<select name="cel" required>
 			<option></option>
