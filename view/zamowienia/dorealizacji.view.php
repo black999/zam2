@@ -24,7 +24,8 @@
 				<th>data</th>
 				<th>zamawiający</th>
 				<th>towar</th>
-				<th>ilość</th>
+				<th>ilość zam.</th>
+				<th>ilość zreal.</th>
 				<th>cena zakupu</th>
 				<th>wartość </th>
 				<th>koszty dodatkowe</th>
