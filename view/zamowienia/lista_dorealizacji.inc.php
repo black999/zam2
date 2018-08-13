@@ -7,7 +7,9 @@
 	<td class="money"><?= $zamowienie['cenaZak'] ?> zł</td>
 	<td class="money"><?= $zamowienie['cenaZak'] * $zamowienie['ilosc'] ?> zł</td>
 	<td class="money"><?= $zamowienie['kosztCena'] ?> zł</td>
-	<td><input class="short" type="" name=""></td>
-	<td><button class="btn-success" type="submit" name="">realizuj</td>
+	<?php if (($_SESSION[APP_NAME]['upr']  & ZAM_PUB) > 0) : ?>
+		<td><input class="short" type="number" value="<?= $zamowienie['ilosc'] ?>" min="1" max="<?= $zamowienie['ilosc'] ?>"></td>
+		<td><button class="btn-success" type="submit" name="">realizuj</td>
+	<?php endif ?>
 </form>
 
