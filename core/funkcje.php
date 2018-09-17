@@ -23,6 +23,7 @@ function zaloguj($dane){
     $_SESSION[APP_NAME]['idOsoby'] = $row['id'];
     $_SESSION[APP_NAME]['idDzial'] = $row['idDzial'];
     $_SESSION[APP_NAME]['realBiuro'] = $row['realBiuro'];
+    $_SESSION[APP_NAME]['uAdmin'] = $row['uAdmin'];
     // uprawnienia wyciagamy w odwrotnej kolejności niż w bazie aby pracownik mial najnizsze 000001
     $_SESSION[APP_NAME]['upr'] = bindec($row['uAdmin'].$row['uPrez'].$row['uKsieg'].$row['uZampub'].$row['uKier'].$row['uPrac']);
     return $_SESSION;

@@ -1,10 +1,5 @@
 <?php 
-  // session_start();
-  // if (!isset($_SESSION['auth'])) {
-  // header("Location:login.php");
-  // }
   require_once "../core/init.php";
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,12 +27,14 @@
          <li class='last'><a href='../core/towary/dodaj.php' TARGET='srodek'><span>Dodaj/Edycja</span></a></li>
       </ul>
    </li>
-   <li class='has-sub'><a href='#'><span>Admin</span></a>
+  <?php if($_SESSION[APP_NAME]['uAdmin'] == '1') : ?>
+    <li class='has-sub'><a href='#'><span>Admin</span></a>
       <ul>
          <li><a href='../core/admin/personel/lista.php' TARGET='srodek'><span>Personel</span></a></li>
          <li class='last'><a href='#' TARGET='srodek'><span>Wydziały</span></a></li>
       </ul>
    </li>
+  <?php endif  ?>
    <li class='last'><a href='#'><span>Info</span></a></li>
 </ul>
 </div>
