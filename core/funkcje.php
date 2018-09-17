@@ -405,17 +405,26 @@ function updatePersonel($dane) {
   $dane['uPrez'] = isset($dane['uPrez']) ? $dane['uPrez'] : "0";
   $dane['uAdmin'] = isset($dane['uAdmin']) ? $dane['uAdmin'] : "0";
   $dane['realBiuro'] = isset($dane['realBiuro']) ? $dane['realBiuro'] : "0";
-  $dane['haslo'] = md5($dane['haslo']);
-  $sql = "UPDATE personel SET imie = :imie, nazwisko = :nazwisko, email = :email, login = :login, haslo = :haslo, idDzial = :idDzial,
+  if($dane['haslo'] != ""){  //jesli haslo nie puste to zmieniamy też haslo jesli puste to hasla nie zmieniamy
+    $dane['haslo'] = md5($dane['haslo']);
+    $sql = "UPDATE personel SET imie = :imie, nazwisko = :nazwisko, email = :email, login = :login, haslo = :haslo, idDzial = :idDzial,
                               uPrac = :uPrac, uKier = :uKier, uZampub = :uZampub, uKsieg = :uKsieg, uPrez = :uPrez, uAdmin = :uAdmin, realBiuro = :realBiuro
                           WHERE id = :id";
+  } else {
+    $sql = "UPDATE personel SET imie = :imie, nazwisko = :nazwisko, email = :email, login = :login, idDzial = :idDzial,
+                              uPrac = :uPrac, uKier = :uKier, uZampub = :uZampub, uKsieg = :uKsieg, uPrez = :uPrez, uAdmin = :uAdmin, realBiuro = :realBiuro
+                            WHERE id = :id";
+  }
+
   $stmt = $pdo->prepare($sql);
   $stmt->bindValue(':id', $dane['id'], PDO::PARAM_INT);
   $stmt->bindValue(':imie', $dane['imie'], PDO::PARAM_STR);
   $stmt->bindValue(':nazwisko', $dane['nazwisko'], PDO::PARAM_STR);
   $stmt->bindValue(':email', $dane['email'], PDO::PARAM_STR);
   $stmt->bindValue(':login', $dane['login'], PDO::PARAM_STR);
-  $stmt->bindValue(':haslo', $dane['haslo'], PDO::PARAM_STR);
+  if($dane['haslo'] != "") {
+    $stmt->bindValue(':haslo', $dane['haslo'], PDO::PARAM_STR);
+  }
   $stmt->bindValue(':idDzial', $dane['idDzial'], PDO::PARAM_INT);
   $stmt->bindValue(':uPrac', $dane['uPrac'], PDO::PARAM_INT);
   $stmt->bindValue(':uKier', $dane['uKier'], PDO::PARAM_INT);

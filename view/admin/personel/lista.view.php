@@ -50,7 +50,7 @@
 					<label>Hasło</label>
 				</td>
 				<td>
-					<input class="long" type="password" name="haslo" max="50" maxlength=50 required>
+					<input class="long" type="password" name="haslo" max="50" maxlength=50 <?php if($pracownik['id'] == '0') echo "required" ?> >
 				</td>
 			</tr>
 			<tr>
