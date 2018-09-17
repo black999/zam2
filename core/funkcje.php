@@ -322,26 +322,6 @@ function addKomentarz($dane) {
   }
 }
 
-// funkcja pobiera z bazy informację o wszystkich zamowieniach
-function getPersonel($warunek = "") {
-  global $pdo;
-  $tab = [];
-  if ($warunek) {
-    $warunek = 'WHERE ' . $warunek;
-  }
-  $sql = "SELECT *  from personel";
-  $stmt = $pdo->prepare($sql);
-  try {
-    $stmt->execute();
-  } catch (PDOException $e) {
-    die($e->getMessage());
-  }
-  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $tab[$row['id']] = $row;
-  }
-  return $tab;
-}
-
 // funkcja zwraca najwyższe uprawnienie danej osoby 
 function getPozycja() {
   $poz = '';
@@ -351,4 +331,103 @@ function getPozycja() {
   $poz =  ($_SESSION[APP_NAME]['upr']  & KSIEGOWY) > 0  ? 'akcKsie' : $poz;
   $poz =  ($_SESSION[APP_NAME]['upr']  & PREZES) > 0  ? 'akcPre' : $poz;
   return $poz;
+}
+
+// funkcja pobiera z bazy informację o wszystkich pracownikach
+function getPersonel($warunek = "") {
+  global $pdo;
+  $tab = [];
+  if ($warunek) {
+    $warunek = 'WHERE ' . $warunek;
+  }
+  $sql = "SELECT *  from personel " . $warunek;
+  $stmt = $pdo->prepare($sql);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+  if ($warunek) {
+    $tab = $stmt->fetch(PDO::FETCH_ASSOC);
+  } else {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      $tab[$row['id']] = $row;
+    }
+  }
+  return $tab;
+}
+
+
+
+// funkcja dodaje do bazy nowego pracownika
+function addPersonel($dane) {
+  global $pdo;
+  $dane['uPrac'] = isset($dane['uPrac']) ? $dane['uPrac'] : "0";
+  $dane['uKier'] = isset($dane['uKier']) ? $dane['uKier'] : "0";
+  $dane['uKsieg'] = isset($dane['uKsieg']) ? $dane['uKsieg'] : "0";
+  $dane['uKsieg'] = isset($dane['uKsieg']) ? $dane['uKsieg'] : "0";
+  $dane['uZampub'] = isset($dane['uZampub']) ? $dane['uZampub'] : "0";
+  $dane['uPrez'] = isset($dane['uPrez']) ? $dane['uPrez'] : "0";
+  $dane['uAdmin'] = isset($dane['uAdmin']) ? $dane['uAdmin'] : "0";
+  $dane['realBiuro'] = isset($dane['realBiuro']) ? $dane['realBiuro'] : "0";
+  $dane['haslo'] = md5($dane['haslo']);
+  $sql = "INSERT into personel values (NULL, :imie, :nazwisko, :email, :login, :haslo, :idDzial, :uPrac, :uKier, :uZampub, :uKsieg, :uPrez, :uAdmin, :realBiuro)";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':imie', $dane['imie'], PDO::PARAM_STR);
+  $stmt->bindValue(':nazwisko', $dane['nazwisko'], PDO::PARAM_STR);
+  $stmt->bindValue(':email', $dane['email'], PDO::PARAM_STR);
+  $stmt->bindValue(':login', $dane['login'], PDO::PARAM_STR);
+  $stmt->bindValue(':haslo', $dane['haslo'], PDO::PARAM_STR);
+  $stmt->bindValue(':idDzial', $dane['idDzial'], PDO::PARAM_INT);
+  $stmt->bindValue(':uPrac', $dane['uPrac'], PDO::PARAM_INT);
+  $stmt->bindValue(':uKier', $dane['uKier'], PDO::PARAM_INT);
+  $stmt->bindValue(':uZampub', $dane['uZampub'], PDO::PARAM_INT);
+  $stmt->bindValue(':uKsieg', $dane['uKsieg'], PDO::PARAM_INT);
+  $stmt->bindValue(':uPrez', $dane['uPrez'], PDO::PARAM_INT);
+  $stmt->bindValue(':uAdmin', $dane['uAdmin'], PDO::PARAM_INT);
+  $stmt->bindValue(':realBiuro', $dane['realBiuro'], PDO::PARAM_INT);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+}
+
+// funkcja aktualizuje pracownika
+function updatePersonel($dane) {
+  global $pdo;
+  $dane['uPrac'] = isset($dane['uPrac']) ? $dane['uPrac'] : "0";
+  $dane['uKier'] = isset($dane['uKier']) ? $dane['uKier'] : "0";
+  $dane['uKsieg'] = isset($dane['uKsieg']) ? $dane['uKsieg'] : "0";
+  $dane['uKsieg'] = isset($dane['uKsieg']) ? $dane['uKsieg'] : "0";
+  $dane['uZampub'] = isset($dane['uZampub']) ? $dane['uZampub'] : "0";
+  $dane['uPrez'] = isset($dane['uPrez']) ? $dane['uPrez'] : "0";
+  $dane['uAdmin'] = isset($dane['uAdmin']) ? $dane['uAdmin'] : "0";
+  $dane['realBiuro'] = isset($dane['realBiuro']) ? $dane['realBiuro'] : "0";
+  $dane['haslo'] = md5($dane['haslo']);
+  $sql = "UPDATE personel SET imie = :imie, nazwisko = :nazwisko, email = :email, login = :login, haslo = :haslo, idDzial = :idDzial,
+                              uPrac = :uPrac, uKier = :uKier, uZampub = :uZampub, uKsieg = :uKsieg, uPrez = :uPrez, uAdmin = :uAdmin, realBiuro = :realBiuro
+                          WHERE id = :id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':id', $dane['id'], PDO::PARAM_INT);
+  $stmt->bindValue(':imie', $dane['imie'], PDO::PARAM_STR);
+  $stmt->bindValue(':nazwisko', $dane['nazwisko'], PDO::PARAM_STR);
+  $stmt->bindValue(':email', $dane['email'], PDO::PARAM_STR);
+  $stmt->bindValue(':login', $dane['login'], PDO::PARAM_STR);
+  $stmt->bindValue(':haslo', $dane['haslo'], PDO::PARAM_STR);
+  $stmt->bindValue(':idDzial', $dane['idDzial'], PDO::PARAM_INT);
+  $stmt->bindValue(':uPrac', $dane['uPrac'], PDO::PARAM_INT);
+  $stmt->bindValue(':uKier', $dane['uKier'], PDO::PARAM_INT);
+  $stmt->bindValue(':uZampub', $dane['uZampub'], PDO::PARAM_INT);
+  $stmt->bindValue(':uKsieg', $dane['uKsieg'], PDO::PARAM_INT);
+  $stmt->bindValue(':uPrez', $dane['uPrez'], PDO::PARAM_INT);
+  $stmt->bindValue(':uAdmin', $dane['uAdmin'], PDO::PARAM_INT);
+  $stmt->bindValue(':realBiuro', $dane['realBiuro'], PDO::PARAM_INT);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
 }

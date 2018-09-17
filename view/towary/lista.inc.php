@@ -1,5 +1,5 @@
 <div>
-	<table id="tabela1" class="lista">
+	<table id="tabela1" class="lista compact">
 		<thead>
 			<tr>
 				<th>Nazwa</th>

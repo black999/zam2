@@ -34,8 +34,8 @@
    </li>
    <li class='has-sub'><a href='#'><span>Admin</span></a>
       <ul>
-         <li><a href='nic' TARGET='srodek'><span>Personel</span></a></li>
-         <li class='last'><a href='nic' TARGET='srodek'><span>Wydziały</span></a></li>
+         <li><a href='../core/admin/personel/lista.php' TARGET='srodek'><span>Personel</span></a></li>
+         <li class='last'><a href='#' TARGET='srodek'><span>Wydziały</span></a></li>
       </ul>
    </li>
    <li class='last'><a href='#'><span>Info</span></a></li>
