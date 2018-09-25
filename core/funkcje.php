@@ -442,3 +442,43 @@ function updatePersonel($dane) {
     die($e->getMessage());
   }
 }
+
+function uploadFile($file){
+  $uploadOk = 1;
+  $rok = date('Y');
+  $miesiac = date('m');
+  $plik = date('YmdHisu') . ".pdf";
+  $target_dir = DIR_FAKTURY . $rok . "/" . $miesiac . "/";
+  $target_file = $target_dir . $plik;
+  if (!is_dir(DIR_FAKTURY . $rok)){
+    mkdir(DIR_FAKTURY . $rok) or die('Nie można utworzyć katalogu ' . DIR_FAKTURY . $rok);
+    if (!is_dir(DIR_FAKTURY . $rok . "/" . $miesiac)){
+      mkdir($target_dir) or die ('Nie można utworzyć katalogu ' . $target_dir);
+    };
+  };
+
+  if (file_exists($target_file)) {
+    echo "Przepraszam plik istnieje <br>";
+    $uploadOk = 0;
+  }
+
+  if ($file['fileToUpload']['type'] != 'application/pdf'){
+    echo "plik nie jest dokumentem PDF <br>";
+    $uploadOk = 0;
+  }
+
+  if ($file["fileToUpload"]["size"] > 500000) {
+    echo "Plik jest za duży - ponad 500 kB";
+    $uploadOk = 0;
+  } 
+
+  if ($uploadOk == 0) {
+    echo "Plik nie został przesłany";
+  } else {
+    if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
+      echo "Plik ". basename( $file["fileToUpload"]["name"]). " został przesłany";
+    } else {
+      echo "Sorry, there was an error uploading your file.";
+    }
+  }
+}

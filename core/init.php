@@ -10,6 +10,8 @@
 	define('KSIEGOWY', 8);
 	define('PREZES', 16);
 
+	define('DIR_FAKTURY', 'c:\faktury\\');
+
 	require_once APP_DIR . '/inc/nazwadb.inc.php';
 	require_once "funkcje.php";
 	

@@ -60,8 +60,7 @@
 					<select name="idDzial" >
 						<option value="0"></option>
 						<?php foreach ($dzialy as $dzial) : ?>
-							<option value="<?= $dzial['id'] ?>" 
-								<?php if($dzial['id'] == $pracownik['idDzial']) echo "selected" ; ?> > 
+							<option value="<?= $dzial['id'] ?>"	<?= ($dzial['id'] == $pracownik['idDzial']) ? " selected" :"" ?> > 
 								<?= $dzial['nazwa'] ?>
 							</option>
 						<?php endforeach ?>
