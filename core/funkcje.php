@@ -280,7 +280,8 @@ function getDzialy() {
     die($e->getMessage());
   }
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $tab[] = $row;
+    $tab[$row['id']] = $row;
+    //$tab[$row['id']] = $row['nazwa'];
   }
   return $tab;
 }

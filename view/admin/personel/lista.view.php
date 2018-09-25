@@ -8,7 +8,6 @@
 </head>
 <body>
 <div class="tytul">Lista personelu</div>
-<div class="dialog">takie tam</div>
 <div>
 	<form action="#" method="POST">
 		<input type="hidden" name="id" value="<?= $pracownik['id'] ?>">
