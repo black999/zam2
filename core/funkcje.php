@@ -443,11 +443,13 @@ function updatePersonel($dane) {
   }
 }
 
-function uploadFile($file){
+//funkcja zapisuje fakturę na dysku
+function uploadFile($file, $faktura){
   $uploadOk = 1;
   $rok = date('Y');
   $miesiac = date('m');
   $plik = date('YmdHisu') . ".pdf";
+  $faktura['nazwa'] = $plik;
   $target_dir = DIR_FAKTURY . $rok . "/" . $miesiac . "/";
   $target_file = $target_dir . $plik;
   if (!is_dir(DIR_FAKTURY . $rok)){
@@ -476,9 +478,47 @@ function uploadFile($file){
     echo "Plik nie został przesłany";
   } else {
     if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
+      addFaktura($faktura);
       echo "Plik ". basename( $file["fileToUpload"]["name"]). " został przesłany";
     } else {
       echo "Sorry, there was an error uploading your file.";
     }
   }
+}
+//funkcja zapisuje fakturę do bazy
+function addFaktura($faktura){
+  global $pdo;
+  $rok = substr($faktura['nazwa'], 0, 4);
+  $miesiac = substr($faktura['nazwa'], 4, 2);
+  $sql = "INSERT into faktury values (NULL, NOW(), :nazwa, :rok, :miesiac, :opis)";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':nazwa', $faktura['nazwa'], PDO::PARAM_STR);
+  $stmt->bindValue(':rok', $rok, PDO::PARAM_INT);
+  $stmt->bindValue(':miesiac', $miesiac, PDO::PARAM_INT);
+  $stmt->bindValue(':opis', $faktura['opis'], PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+    return true;
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+}
+
+// funkcja pobiera z bazy informację o wszystkich fakturach
+function getFaktury($warunek = "") {
+  if ($warunek) {
+    $warunek = 'WHERE ' . $warunek;
+  }
+  global $pdo;
+  $sql = "SELECT * from faktury " . $warunek; 
+  $stmt = $pdo->prepare($sql);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    die($e->getMessage());
+  }
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $tab[$row['id']] = $row;
+  }
+  return $tab;
 }
