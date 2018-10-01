@@ -12,7 +12,7 @@
 	<form method="POST" enctype="multipart/form-data">
 	   	<input type="hidden" name="MAX_FILE_SIZE" value="300000" >
 		<label>Wybierz fakturę do przesłania</label>
-		<input type="file" name="fileToUpload">
+		<input type="file" name="fileToUpload" accept="application/pdf">
 		<label>Opis faktury</label>
 		<input type="text" name="opis" required>
 		<button type="submit" name="submit">prześlij plik</button>
@@ -39,7 +39,7 @@
 					<td><?= $faktura['opis'] ?></td>
 					<td><?= $faktura['imie'] . " " . $faktura['nazwisko'] ?></td>
 					<td>
-						<button class="pokaz" data-sciezka="<?= $faktura['sciezka'] ?>" >pokaz</button>
+						<button class="pokaz" data-sciezka="<?= $faktura['sciezka'] ?>" >pokaż</button>
 					</td>
 				</tr>
 			<?php endforeach; ?>					

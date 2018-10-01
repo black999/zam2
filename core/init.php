@@ -1,8 +1,6 @@
 <?php
 	define('APP_NAME', 'zam2');
-	// define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/'. APP_NAME);
-	define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] .  APP_NAME);
-	// die(APP_DIR);
+	define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/'. APP_NAME);
 	define('SITEROOT',"http://" . $_SERVER['SERVER_NAME'] . '/'. APP_NAME );
 	define('TIMEOUT', '3600');
 
