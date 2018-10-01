@@ -28,6 +28,15 @@ body {
 .dialog-sm{
   width: 500px;
 }
+.dialog-lg {
+  border-color: gray;
+  border-style: solid;
+  left: 2%;
+  width: 96%;
+  /*margin: auto;*/
+  margin-left: auto;
+  margin-right: auto;
+}
 .font-sm {
   font-size: 9px;
 }

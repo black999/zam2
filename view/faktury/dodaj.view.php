@@ -18,12 +18,18 @@
 		<button type="submit" name="submit">prześlij plik</button>
 	</form>
 </div>
+<div class="dialog dialog-lg">
+	<button id="zamknij">Zamknij</button>
+	<embed src="" width="100%" height="500">
+</div>
 <div>
-	<table class="lista">
+	<table id="tabela1" class="lista compact">
 		<thead>
 			<tr>
 				<th>data</th>
 				<th>opis</th>
+				<th>dodana przez</th>
+				<th>opcje</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,11 +37,20 @@
 				<tr>
 					<td><?= $faktura['data'] ?></td>
 					<td><?= $faktura['opis'] ?></td>
+					<td><?= $faktura['imie'] . " " . $faktura['nazwisko'] ?></td>
+					<td>
+						<button class="pokaz" data-sciezka="<?= $faktura['sciezka'] ?>" >pokaz</button>
+					</td>
 				</tr>
 			<?php endforeach; ?>					
 		</tbody>
 	</table>	
 </div>
-
+<script type="text/javascript">
+	<?php
+		require APP_DIR . "/jquery/dataTable.inc.js";
+		require APP_DIR . "/jquery/faktury/dodaj.js";
+	?>
+</script>
 </body>
 </html>

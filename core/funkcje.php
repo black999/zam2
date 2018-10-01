@@ -490,8 +490,9 @@ function addFaktura($faktura){
   global $pdo;
   $rok = substr($faktura['nazwa'], 0, 4);
   $miesiac = substr($faktura['nazwa'], 4, 2);
-  $sql = "INSERT into faktury values (NULL, NOW(), :nazwa, :rok, :miesiac, :opis)";
+  $sql = "INSERT into faktury values (NULL, NOW(), :idOsoby, :nazwa, :rok, :miesiac, :opis)";
   $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':idOsoby', $_SESSION[APP_NAME]['idOsoby'], PDO::PARAM_INT);
   $stmt->bindValue(':nazwa', $faktura['nazwa'], PDO::PARAM_STR);
   $stmt->bindValue(':rok', $rok, PDO::PARAM_INT);
   $stmt->bindValue(':miesiac', $miesiac, PDO::PARAM_INT);
@@ -506,11 +507,13 @@ function addFaktura($faktura){
 
 // funkcja pobiera z bazy informację o wszystkich fakturach
 function getFaktury($warunek = "") {
+  $tab = [];
   if ($warunek) {
     $warunek = 'WHERE ' . $warunek;
   }
   global $pdo;
-  $sql = "SELECT * from faktury " . $warunek; 
+  $sql = "SELECT f.*, p.nazwisko, p.imie from faktury f 
+          join personel p on f.idOsoby = p.id " . $warunek; 
   $stmt = $pdo->prepare($sql);
   try {
     $stmt->execute();
@@ -518,7 +521,9 @@ function getFaktury($warunek = "") {
     die($e->getMessage());
   }
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    if ($row['miesiac'] < 10) $row['miesiac'] = '0' . $row['miesiac'];
     $tab[$row['id']] = $row;
+    $tab[$row['id']]['sciezka'] = SITEROOT . DIR_FAK_NAME . $row['rok'] . '/' . $row['miesiac'] . '/'. $row['nazwa'];
   }
   return $tab;
 }
