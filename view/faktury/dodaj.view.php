@@ -11,7 +11,7 @@
 <div>
 	<form method="POST" enctype="multipart/form-data">
 	   	<input type="hidden" name="MAX_FILE_SIZE" value="300000" >
-		<label>Wybierz fakturę do przesłania</label>
+		<label>Wybierz fakturę (max 500kb)</label>
 		<input type="file" name="fileToUpload" accept="application/pdf">
 		<label>Opis faktury</label>
 		<input type="text" name="opis" required>
@@ -19,7 +19,8 @@
 	</form>
 </div>
 <div class="dialog dialog-lg">
-	<button id="zamknij">Zamknij</button>
+	<button class="opis" data-sciezka="" >opis</button>
+	<button class="btn btn-edit" id="zamknij" style="float: right;">Zamknij</button>
 	<embed src="" width="100%" height="500">
 </div>
 <div>
@@ -40,6 +41,7 @@
 					<td><?= $faktura['imie'] . " " . $faktura['nazwisko'] ?></td>
 					<td>
 						<button class="pokaz" data-sciezka="<?= $faktura['sciezka'] ?>" >pokaż</button>
+						<button class="opis" data-sciezka="<?= $faktura['sciezka'] ?>" >opis</button>
 					</td>
 				</tr>
 			<?php endforeach; ?>					
